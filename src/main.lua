@@ -33,25 +33,45 @@ function matProd(pM1, pM2)
     return result
 end
 
+
 -- identity function (no transform)
 function id(pCoord)
  -- useless function but shows that
  -- x_transf = x * 1 + y * O = x
  -- y_transf = x * 0 + y * 1 = y
-  local identity = {{1,0},
-                    {0,1}}
+  local identity = {{1, 0},
+                    {0, 1}}
 
   return matProd({pCoord}, identity)[1]
 
 end
 
 
+function horizontalFlip(pCoord)
+
+  local hFlip = {{-1, 0},
+                 {0, 1}}
+  
+  return matProd({pCoord}, hFlip)[1]
+
+end
+
+
+function verticalFlip(pCoord)
+
+  local vFlip = {{1, 0},
+                 {0, -1}}
+
+  return matProd({pCoord}, vFlip)[1]
+
+end
+
 function scale(pCoord, pSx, pSy)
   -- scaling matrix
   -- x_transf = x * Sx + y * 0 = x * Sx
   -- y_transf = x * 0 + y * Sy = y * sY
   local scaling = {{pSx, 0},
-             {0, pSy}}
+                   {0, pSy}}
 
   return matProd(pCoord, scaling)[1] 
 
@@ -136,6 +156,12 @@ function love.update(dt)
       if transformation == 'CROT' then
         pointsLst[i] = rotate_counter(point, 10)
       end
+      if transformation == 'VFLIP' then
+        pointsLst[i] = verticalFlip(point)
+      end
+      if transformation == 'HFLIP' then
+        pointsLst[i] = horizontalFlip(point)
+      end
     end
     auth = false
     --for i, point in ipairs(pointsLst) do
@@ -202,12 +228,22 @@ function love.keypressed(key)
     auth = true
   end
 
+  if key == 'h' then
+    transformation = 'HFLIP'
+    auth = true
+  end
+
+  if key == 'v' then
+    transformation = 'VFLIP'
+    auth = true
+  end
+
   if key == 'c' then
     transformation = 'CROT'
     auth = true
   end
 
-  if key == 'h' then
+  if key == 'space' then
     showHelp = not showHelp
   end
 
