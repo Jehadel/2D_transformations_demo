@@ -48,6 +48,8 @@ end
 
 
 function horizontalFlip(pCoord)
+  -- x_transf = x * -1 + y * 0 = -x
+  -- y_transf = x * 0 + y * 1 = y
 
   local hFlip = {{-1, 0},
                  {0, 1}}
@@ -58,6 +60,8 @@ end
 
 
 function verticalFlip(pCoord)
+  -- x_transf = x * 1 + y * 0 = x
+  -- y_transf = x * 0 + y * -1 = -y
 
   local vFlip = {{1, 0},
                  {0, -1}}
@@ -65,6 +69,7 @@ function verticalFlip(pCoord)
   return matProd({pCoord}, vFlip)[1]
 
 end
+
 
 function scale(pCoord, pSx, pSy)
   -- scaling matrix
@@ -122,14 +127,14 @@ function love.load()
   showHelp = false
   -- transformation = 'ID'
   auth = false
-  pointsLst = {{0, 0},
-               {40, 0},
-               {40, 80},
-               {0, 80},
-               {0, 60},
-               {20, 40},
-               {0, 20},
-               {0, 0}
+  pointsLst = {{100, 100},
+               {140, 100},
+               {140, 180},
+               {100, 180},
+               {100, 160},
+               {120, 140},
+               {100, 120},
+               {100, 100}
           }
 
 end
@@ -179,8 +184,6 @@ function love.draw()
 
   local originX = WINDOW_W/2
   local originY = WINDOW_H/2
-  local offsetX = 100
-  local offsetY = -150
 
   -- draw axes
   love.graphics.setColor(1,0,0)
@@ -190,21 +193,23 @@ function love.draw()
 
   for idx=1, #pointsLst-1 do
     love.graphics.line(
-                        pointsLst[idx][1] + originX + offsetX, 
-                        pointsLst[idx][2] + originY + offsetY, 
-                        pointsLst[idx+1][1] + originX  + offsetX, 
-                        pointsLst[idx+1][2] + originY + offsetY
+                        pointsLst[idx][1] + originX, 
+                        pointsLst[idx][2] + originY, 
+                        pointsLst[idx+1][1] + originX, 
+                        pointsLst[idx+1][2] + originY
                         ) 
   end
 
 
   if showHelp == true then
     love.graphics.print('‘i’ for identity', 10, 20)
-    love.graphics.print('’r’ for rotation, 10° pace', 10, 40)
-    love.graphics.print('’c’ for counter-rotation, 10° pace', 10, 60)
-    love.graphics.print('’+/-’ for scaling, ±10%', 10, 80)
-    love.graphics.print('’up/down’ for y scaling, ±10%', 10, 100)
-    love.graphics.print('’left/right’ for x scaling, ±10%', 10, 120)
+    love.graphics.print('’h’ for horizontal flip', 10, 40)
+    love.graphics.print('’v’ for vertical flip', 10, 60)
+    love.graphics.print('’r’ for rotation, 10° pace', 10, 80)
+    love.graphics.print('’c’ for counter-rotation, 10° pace', 10, 100)
+    love.graphics.print('’x/y and +/-’ for scaling x or y, ±10%', 10, 120)
+    love.graphics.print('’up/down’ for y shear, ±10%', 10, 140)
+    love.graphics.print('’left/right’ for x shear, ±10%', 10, 160)
   end
 
 end
