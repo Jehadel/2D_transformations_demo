@@ -71,17 +71,6 @@ function verticalFlip(pCoord)
 end
 
 
-function scale(pCoord, pSx, pSy)
-  -- scaling matrix
-  -- x_transf = x * Sx + y * 0 = x * Sx
-  -- y_transf = x * 0 + y * Sy = y * sY
-  local scaling = {{pSx, 0},
-                   {0, pSy}}
-
-  return matProd(pCoord, scaling)[1] 
-
-end
-
 
 function rotate(pCoord, pAngle)
   -- rotation matrix, clockwise
@@ -97,7 +86,7 @@ function rotate(pCoord, pAngle)
 end
 
 
-function rotate_counter(pCoord, pAngle)
+function rotateCounter(pCoord, pAngle)
   -- rotation matrix, counter-clockwise
   -- x_transf = x * cos(angle) - sin(angle) * y
   -- y_transf = x * sin(angle) + cos(angle) + y
@@ -109,6 +98,30 @@ function rotate_counter(pCoord, pAngle)
   return matProd({pCoord}, rotation_counter)[1]
 
 end
+
+  -- scaling matrix
+  -- x_transf = x * Sx + y * 0 = x * Sx
+  -- y_transf = x * 0 + y * Sy = y * sY
+  
+function upScaleX(pCoord)
+
+  local scaling = {{1.1, 0},
+                   {0, 1}}
+
+  return matProd({pCoord}, scaling)[1] 
+
+end
+ 
+
+function downScaleX(pCoord)
+
+  local scaling = {{.9, 0},
+                   {0, 1}}
+
+  return matProd({pCoord}, scaling)[1] 
+
+end
+
 -- print('TRANSF declaration')
 -- TRANSF = {
 --   ID = id(),
@@ -159,7 +172,7 @@ function love.update(dt)
         pointsLst[i] = rotate(point, 10)
       end
       if transformation == 'CROT' then
-        pointsLst[i] = rotate_counter(point, 10)
+        pointsLst[i] = rotateCounter(point, 10)
       end
       if transformation == 'VFLIP' then
         pointsLst[i] = verticalFlip(point)
@@ -167,6 +180,15 @@ function love.update(dt)
       if transformation == 'HFLIP' then
         pointsLst[i] = horizontalFlip(point)
       end
+          
+      if transformation == 'USCALX' then
+        pointsLst[i] = upScaleX(point)
+      end
+
+      if transformation == 'DSCALX' then
+        pointsLst[i] = downScaleX(point)
+      end
+
     end
     auth = false
     --for i, point in ipairs(pointsLst) do
@@ -207,7 +229,7 @@ function love.draw()
     love.graphics.print('’v’ for vertical flip', 10, 60)
     love.graphics.print('’r’ for rotation, 10° pace', 10, 80)
     love.graphics.print('’c’ for counter-rotation, 10° pace', 10, 100)
-    love.graphics.print('’x/y and +/-’ for scaling x or y, ±10%', 10, 120)
+    love.graphics.print('’x/y and +/-’ for scaling x or y ±10%', 10, 120)
     love.graphics.print('’up/down’ for y shear, ±10%', 10, 140)
     love.graphics.print('’left/right’ for x shear, ±10%', 10, 160)
   end
@@ -245,6 +267,16 @@ function love.keypressed(key)
 
   if key == 'c' then
     transformation = 'CROT'
+    auth = true
+  end
+
+  if (key == 'x' and love.keyboard.isDown('+')) or (key == '+' and love.keyboard.isDown('x')) then
+    transformation = 'USCALX'
+    auth = true
+  end
+
+  if (key == 'x' and love.keyboard.isDown('-')) or (key == '-' and love.keyboard.isDown('x')) then
+    transformation = 'DSCALX'
     auth = true
   end
 
