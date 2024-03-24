@@ -37,6 +37,8 @@ end
 -- identity function (no transform)
 function id(pCoord)
  -- useless function but shows that
+ -- |1 0|
+ -- |0 1| matrix
  -- x_transf = x * 1 + y * O = x
  -- y_transf = x * 0 + y * 1 = y
   local identity = {{1, 0},
@@ -48,6 +50,8 @@ end
 
 
 function horizontalFlip(pCoord)
+  -- |-1 0|
+  -- | 0 1| matrix
   -- x_transf = x * -1 + y * 0 = -x
   -- y_transf = x * 0 + y * 1 = y
 
@@ -60,6 +64,8 @@ end
 
 
 function verticalFlip(pCoord)
+  -- |1  0|
+  -- |0 -1| matrix
   -- x_transf = x * 1 + y * 0 = x
   -- y_transf = x * 0 + y * -1 = -y
 
@@ -74,6 +80,8 @@ end
 
 function rotate(pCoord, pAngle)
   -- rotation matrix, clockwise
+  -- |cos(angle)  sin(angle)|
+  -- |-sin(angle) cos(angle)|
   -- x_transf = x * cos(angle) + y * sin(angle)
   -- y_transf = -sin(angle) * x + y * cos(angle) 
 
@@ -88,6 +96,8 @@ end
 
 function rotateCounter(pCoord, pAngle)
   -- rotation matrix, counter-clockwise
+  -- |cos(angle) -sin(angle)|
+  -- |sin(angle)  cos(angle)|
   -- x_transf = x * cos(angle) - sin(angle) * y
   -- y_transf = x * sin(angle) + cos(angle) + y
   
@@ -100,6 +110,8 @@ function rotateCounter(pCoord, pAngle)
 end
 
   -- scaling matrix
+  -- | Sx O |
+  -- | 0  Sy|
   -- x_transf = x * Sx + y * 0 = x * Sx
   -- y_transf = x * 0 + y * Sy = y * sY
   
@@ -132,15 +144,35 @@ function upScaleY(pCoord)
 
 end
  
+ 
+function bendX(pCoord)
+-- bending x matrix
+-- |1 S|
+-- |0 1|
+-- x_transf = x * 1 + y * S = x + y*S
+-- y_transf = x * 0 + y + 1 = y
+  local bending = {{1, 0.1},
+                   {0, 1}}
 
-function downScaleY(pCoord)
-
-  local scaling = {{1, 0},
-                   {0, .9}}
-
-  return matProd({pCoord}, scaling)[1] 
+  return matProd({pCoord}, bending)[1] 
 
 end
+
+
+function bendY(pCoord)
+-- bending y matrix
+-- |1 O|
+-- |S 1|
+-- x_transf = x * 1 + y * 0 = x 
+-- y_transf = x * S + y + 1 = y + x * S
+
+  local bending = {{1, 0},
+                   {0.1, 1}}
+
+  return matProd({pCoord}, bending)[1] 
+
+end
+ 
 
 -- print('TRANSF declaration')
 -- TRANSF = {
@@ -217,6 +249,13 @@ function love.update(dt)
         pointsLst[i] = downScaleY(point)
       end
 
+      if transformation == 'BENDX' then
+        pointsLst[i] = bendX(point)
+      end
+      
+      if transformation == 'BENDY' then
+        pointsLst[i] = bendY(point)
+      end
 
     end
     auth = false
@@ -316,6 +355,16 @@ function love.keypressed(key)
 
   if (key == 'y' and love.keyboard.isDown('-')) or (key == '-' and love.keyboard.isDown('y')) then
     transformation = 'DSCALY'
+    auth = true
+  end
+
+  if (key == 'x' and love.keyboard.isDown('b')) or (key == 'b' and love.keyboard.isDown('x')) then
+    transformation = 'BENDX'
+    auth = true
+  end
+
+  if (key == 'y' and love.keyboard.isDown('b')) or (key == 'b' and love.keyboard.isDown('y')) then
+    transformation = 'BENDY'
     auth = true
   end
 
