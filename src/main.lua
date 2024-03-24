@@ -298,8 +298,8 @@ function love.draw()
     love.graphics.print('’r’ for rotation, 10° pace', 10, 80)
     love.graphics.print('’c’ for counter-rotation, 10° pace', 10, 100)
     love.graphics.print('’x/y and +/-’ for scaling x or y ±10%', 10, 120)
-    love.graphics.print('’up/down’ for y shear, ±10%', 10, 140)
-    love.graphics.print('’left/right’ for x shear, ±10%', 10, 160)
+    love.graphics.print('’x/y and b’ for x/y sort of bending/shear, factor .1', 10, 140)
+    love.graphics.print('’space’ to hide/show instructions', 10, 160)
   end
 
 end
