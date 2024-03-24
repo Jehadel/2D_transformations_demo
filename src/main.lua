@@ -122,6 +122,26 @@ function downScaleX(pCoord)
 
 end
 
+
+function upScaleY(pCoord)
+
+  local scaling = {{1, 0},
+                   {0, 1.1}}
+
+  return matProd({pCoord}, scaling)[1] 
+
+end
+ 
+
+function downScaleY(pCoord)
+
+  local scaling = {{1, 0},
+                   {0, .9}}
+
+  return matProd({pCoord}, scaling)[1] 
+
+end
+
 -- print('TRANSF declaration')
 -- TRANSF = {
 --   ID = id(),
@@ -188,6 +208,15 @@ function love.update(dt)
       if transformation == 'DSCALX' then
         pointsLst[i] = downScaleX(point)
       end
+      
+      if transformation == 'USCALY' then
+        pointsLst[i] = upScaleY(point)
+      end
+
+      if transformation == 'DSCALY' then
+        pointsLst[i] = downScaleY(point)
+      end
+
 
     end
     auth = false
@@ -277,6 +306,16 @@ function love.keypressed(key)
 
   if (key == 'x' and love.keyboard.isDown('-')) or (key == '-' and love.keyboard.isDown('x')) then
     transformation = 'DSCALX'
+    auth = true
+  end
+
+  if (key == 'y' and love.keyboard.isDown('+')) or (key == '+' and love.keyboard.isDown('y')) then
+    transformation = 'USCALY'
+    auth = true
+  end
+
+  if (key == 'y' and love.keyboard.isDown('-')) or (key == '-' and love.keyboard.isDown('y')) then
+    transformation = 'DSCALY'
     auth = true
   end
 
