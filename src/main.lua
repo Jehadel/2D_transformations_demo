@@ -2,11 +2,11 @@
 WINDOW_W = 800
 WINDOW_H = 600
 
-
+local transf = {}
 
 -- first, we create a matrix multiplication function
--- even if we will multiply 2x1 and 2x2 matrices
--- after all, it’s a didactic project, isn’t it ?
+-- even if we will multiply 2x1 and 2x2 matrices only.
+-- After all, it’s a didactic project, isn’t it ?
 
 function matProd(pM1, pM2)
   -- you can multiply matrices only if
@@ -35,7 +35,7 @@ end
 
 
 -- identity function (no transform)
-function id(pCoord)
+transf.id = function(pCoord)
  -- useless function but shows that
  -- |1 0|
  -- |0 1| matrix
@@ -49,7 +49,7 @@ function id(pCoord)
 end
 
 
-function horizontalFlip(pCoord)
+transf.hflip = function(pCoord)
   -- |-1 0|
   -- | 0 1| matrix
   -- x_transf = x * -1 + y * 0 = -x
@@ -63,7 +63,7 @@ function horizontalFlip(pCoord)
 end
 
 
-function verticalFlip(pCoord)
+transf.vflip = function(pCoord)
   -- |1  0|
   -- |0 -1| matrix
   -- x_transf = x * 1 + y * 0 = x
@@ -78,14 +78,14 @@ end
 
 
 
-function rotate(pCoord, pAngle)
+transf.rot = function(pCoord)
   -- rotation matrix, clockwise
   -- |cos(angle)  sin(angle)|
   -- |-sin(angle) cos(angle)|
   -- x_transf = x * cos(angle) + y * sin(angle)
   -- y_transf = -sin(angle) * x + y * cos(angle) 
 
-  local radAngle = math.rad(pAngle)
+  local radAngle = math.rad(10)
   local rotation = {{math.cos(radAngle), math.sin(radAngle)},
               {-math.sin(radAngle), math.cos(radAngle)}}
 
@@ -94,14 +94,14 @@ function rotate(pCoord, pAngle)
 end
 
 
-function rotateCounter(pCoord, pAngle)
+transf.c_rot = function(pCoord)
   -- rotation matrix, counter-clockwise
   -- |cos(angle) -sin(angle)|
   -- |sin(angle)  cos(angle)|
   -- x_transf = x * cos(angle) - sin(angle) * y
   -- y_transf = x * sin(angle) + cos(angle) + y
   
-  local radAngle = math.rad(pAngle)
+  local radAngle = math.rad(10)
   local rotation_counter = {{math.cos(radAngle), -math.sin(radAngle)},
                             {math.sin(radAngle), math.cos(radAngle)}}
 
@@ -115,7 +115,7 @@ end
   -- x_transf = x * Sx + y * 0 = x * Sx
   -- y_transf = x * 0 + y * Sy = y * sY
   
-function upScaleX(pCoord)
+transf.upscaleX = function(pCoord)
 
   local scaling = {{1.1, 0},
                    {0, 1}}
@@ -125,7 +125,7 @@ function upScaleX(pCoord)
 end
  
 
-function downScaleX(pCoord)
+transf.downscaleX = function(pCoord)
 
   local scaling = {{.9, 0},
                    {0, 1}}
@@ -135,7 +135,7 @@ function downScaleX(pCoord)
 end
 
 
-function upScaleY(pCoord)
+transf.upscaleY = function(pCoord)
 
   local scaling = {{1, 0},
                    {0, 1.1}}
@@ -144,8 +144,17 @@ function upScaleY(pCoord)
 
 end
  
- 
-function bendX(pCoord)
+transf.downscaleY = function(pCoord)
+
+  local scaling = {{1, 0},
+                   {0, .9}}
+
+  return matProd({pCoord}, scaling)[1]
+
+end
+
+
+transf.bendX = function(pCoord)
 -- bending x matrix
 -- |1 S|
 -- |0 1|
@@ -159,7 +168,7 @@ function bendX(pCoord)
 end
 
 
-function bendY(pCoord)
+transf.bendY = function(pCoord)
 -- bending y matrix
 -- |1 O|
 -- |S 1|
@@ -173,16 +182,6 @@ function bendY(pCoord)
 
 end
  
-
--- print('TRANSF declaration')
--- TRANSF = {
---   ID = id(),
---   SCALE = scale(),
---   ROTATE = rotate(),
---   C_ROTATE = rotate_counter()
--- }
--- print('fin de declaration TRANSF')
-
 function love.load()
   --print('dans load()')
 
@@ -207,61 +206,12 @@ end
 
 function love.update(dt)
 
-  -- print(auth)
-  -- print(transformation)
-
   if auth == true then
 
-    
-   --print('dans update()')
     for i, point in ipairs(pointsLst) do
-     -- print(point[1], point[2])
-      if transformation == 'ID' then
-        -- point = TRANSF.transformation(point)
-        pointsLst[i] = id(point)
-      end
-      if transformation == 'ROT' then
-        pointsLst[i] = rotate(point, 10)
-      end
-      if transformation == 'CROT' then
-        pointsLst[i] = rotateCounter(point, 10)
-      end
-      if transformation == 'VFLIP' then
-        pointsLst[i] = verticalFlip(point)
-      end
-      if transformation == 'HFLIP' then
-        pointsLst[i] = horizontalFlip(point)
-      end
-          
-      if transformation == 'USCALX' then
-        pointsLst[i] = upScaleX(point)
-      end
-
-      if transformation == 'DSCALX' then
-        pointsLst[i] = downScaleX(point)
-      end
-      
-      if transformation == 'USCALY' then
-        pointsLst[i] = upScaleY(point)
-      end
-
-      if transformation == 'DSCALY' then
-        pointsLst[i] = downScaleY(point)
-      end
-
-      if transformation == 'BENDX' then
-        pointsLst[i] = bendX(point)
-      end
-      
-      if transformation == 'BENDY' then
-        pointsLst[i] = bendY(point)
-      end
-
+      pointsLst[i] = transf[transformation](point)
     end
     auth = false
-    --for i, point in ipairs(pointsLst) do
-    --  print(point[1], point[2])
-    --end
 
   end     
 
@@ -270,7 +220,6 @@ end
 
 
 function love.draw()
-  -- print('dans draw()')
 
   local originX = WINDOW_W/2
   local originY = WINDOW_H/2
@@ -307,64 +256,62 @@ end
 
 function love.keypressed(key)
 
-  -- print('dans keypressed()')
-
   if key == 'escape' then
     love.event.quit()
   end
 
   if key == 'r' then
-    transformation = 'ROT'
+    transformation = 'rot'
     auth = true
   end
 
   if key == 'i' then
-    transformation = 'ID'
+    transformation = 'id'
     auth = true
   end
 
   if key == 'h' then
-    transformation = 'HFLIP'
+    transformation = 'hflip'
     auth = true
   end
 
   if key == 'v' then
-    transformation = 'VFLIP'
+    transformation = 'vflip'
     auth = true
   end
 
   if key == 'c' then
-    transformation = 'CROT'
+    transformation = 'c_rot'
     auth = true
   end
 
   if (key == 'x' and love.keyboard.isDown('+')) or (key == '+' and love.keyboard.isDown('x')) then
-    transformation = 'USCALX'
+    transformation = 'upscaleX'
     auth = true
   end
 
   if (key == 'x' and love.keyboard.isDown('-')) or (key == '-' and love.keyboard.isDown('x')) then
-    transformation = 'DSCALX'
+    transformation = 'downscaleX'
     auth = true
   end
 
   if (key == 'y' and love.keyboard.isDown('+')) or (key == '+' and love.keyboard.isDown('y')) then
-    transformation = 'USCALY'
+    transformation = 'upscaleY'
     auth = true
   end
 
   if (key == 'y' and love.keyboard.isDown('-')) or (key == '-' and love.keyboard.isDown('y')) then
-    transformation = 'DSCALY'
+    transformation = 'downscaleY'
     auth = true
   end
 
   if (key == 'x' and love.keyboard.isDown('b')) or (key == 'b' and love.keyboard.isDown('x')) then
-    transformation = 'BENDX'
+    transformation = 'bendX'
     auth = true
   end
 
   if (key == 'y' and love.keyboard.isDown('b')) or (key == 'b' and love.keyboard.isDown('y')) then
-    transformation = 'BENDY'
+    transformation = 'bendY'
     auth = true
   end
 
