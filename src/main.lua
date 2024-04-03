@@ -183,13 +183,11 @@ transf.bendY = function(pCoord)
 end
  
 function love.load()
-  --print('dans load()')
 
   love.window.setMode(WINDOW_W, WINDOW_H)
   love.window.setTitle('2x2 matrices 2D transformations demo')
 
   showHelp = false
-  -- transformation = 'ID'
   auth = false
   pointsLst = {{100, 100},
                {140, 100},
@@ -214,7 +212,6 @@ function love.update(dt)
     auth = false
 
   end     
-
   
 end
 
@@ -230,6 +227,7 @@ function love.draw()
   love.graphics.line(originX, 0, originX, WINDOW_H)
   love.graphics.setColor(1, 1, 1)
 
+  -- draw figure
   for idx=1, #pointsLst-1 do
     love.graphics.line(
                         pointsLst[idx][1] + originX, 
