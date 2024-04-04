@@ -154,31 +154,31 @@ transf.downscaleY = function(pCoord)
 end
 
 
-transf.bendX = function(pCoord)
--- bending x matrix
+transf.tearX = function(pCoord)
+-- tearing x matrix
 -- |1 S|
 -- |0 1|
 -- x_transf = x * 1 + y * S = x + y*S
 -- y_transf = x * 0 + y + 1 = y
-  local bending = {{1, 0.1},
+  local tearing = {{1, 0.1},
                    {0, 1}}
 
-  return matProd({pCoord}, bending)[1] 
+  return matProd({pCoord}, tearing)[1] 
 
 end
 
 
-transf.bendY = function(pCoord)
--- bending y matrix
+transf.tearY = function(pCoord)
+-- tearing y matrix
 -- |1 O|
 -- |S 1|
 -- x_transf = x * 1 + y * 0 = x 
 -- y_transf = x * S + y + 1 = y + x * S
 
-  local bending = {{1, 0},
+  local tearingY = {{1, 0},
                    {0.1, 1}}
 
-  return matProd({pCoord}, bending)[1] 
+  return matProd({pCoord}, tearingY)[1] 
 
 end
  
@@ -187,7 +187,7 @@ function love.load()
   love.window.setMode(WINDOW_W, WINDOW_H)
   love.window.setTitle('2x2 matrices 2D transformations demo')
 
-  showHelp = false
+  showHelp = true 
   auth = false
   pointsLst = {{100, 100},
                {140, 100},
@@ -245,7 +245,7 @@ function love.draw()
     love.graphics.print('’r’ for rotation, 10° pace', 10, 80)
     love.graphics.print('’c’ for counter-rotation, 10° pace', 10, 100)
     love.graphics.print('’x/y and +/-’ for scaling x or y ±10%', 10, 120)
-    love.graphics.print('’x/y and b’ for x/y sort of bending/shear, factor .1', 10, 140)
+    love.graphics.print('’x/y and t’ for x/y sort of tearing/shearing, factor .1', 10, 140)
     love.graphics.print('’space’ to hide/show instructions', 10, 160)
   end
 
@@ -303,13 +303,13 @@ function love.keypressed(key)
     auth = true
   end
 
-  if (key == 'x' and love.keyboard.isDown('b')) or (key == 'b' and love.keyboard.isDown('x')) then
-    transformation = 'bendX'
+  if (key == 'x' and love.keyboard.isDown('t')) or (key == 't' and love.keyboard.isDown('x')) then
+    transformation = 'tearX'
     auth = true
   end
 
-  if (key == 'y' and love.keyboard.isDown('b')) or (key == 'b' and love.keyboard.isDown('y')) then
-    transformation = 'bendY'
+  if (key == 'y' and love.keyboard.isDown('t')) or (key == 't' and love.keyboard.isDown('y')) then
+    transformation = 'tearY'
     auth = true
   end
 
