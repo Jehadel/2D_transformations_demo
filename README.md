@@ -33,4 +33,4 @@ Write explanations on 2x2 matrices 2D transformations directly in the README !
 
 ## Issues
 
-The .js version sims to have issues detecting simultaneous key press.
+The .js version seems to have issues detecting simultaneous key press.
