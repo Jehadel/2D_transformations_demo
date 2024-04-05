@@ -111,7 +111,7 @@ The drawback of this method is that the figure is transformed regarding *x* and 
 
 ### Rotation matrix (clockwise)
 
-The rotation formulas is harder to explain. (Explanation will come with figures soon).
+The rotation formulas are harder to explain. (Explanation will come with figures soon).
 
 For the moment, just take for granted that the rotation matrix is :
 
