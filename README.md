@@ -101,6 +101,7 @@ $$
 It results by an horizontal flip, as if the figure were reflected with respect of the *y* axis.
 
 The matrix for a vertical flip :
+
 $$
 \begin{bmatrix} 1 & 0 \\\ 
                 0 & -1 \end{bmatrix}
