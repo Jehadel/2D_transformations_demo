@@ -18,8 +18,8 @@ That’s why 3x3 matrices are a better choice ! See [this repository](https://gi
 If points coordinates are represented by a vector or 2x1 column matrix, the multiplication of this vector by a 2x2 matrices is (I will represent coordinates by a row vector, when using a column vector just transpose the matrices used) :
 
 $$ \begin{bmatrix} x & y \end{bmatrix} . 
-    \begin{bmatrix} a & b \\\ 
-    b & c\end{bmatrix} = 
+    \begin{bmatrix} a & c \\\ 
+    b & d\end{bmatrix} = 
     \begin{bmatrix} x.a + y.b &
      x.c + y.d\end{bmatrix} 
 $$
