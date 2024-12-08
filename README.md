@@ -39,7 +39,7 @@ Let‘s see how different 2x2 matrices could be used to express different transf
 $$ \begin{bmatrix} x & y\end{bmatrix} . 
     \begin{bmatrix} 1 & 0 \\\ 
                 0 & 1 \end{bmatrix} =
-    \begin{bmatrix} x.1 + y.0 & x.0 + y.10 \end{bmatrix} =
+    \begin{bmatrix} x.1 + y.0 & x.0 + y.1 \end{bmatrix} =
     \begin{bmatrix} x & y \end{bmatrix}
 $$
 
@@ -50,7 +50,7 @@ Multiplication by the identity matrix (a matrix filled of 1s on the diagonal onl
 $$ \begin{bmatrix} x & y\end{bmatrix} . 
     \begin{bmatrix} 10 & 0 \\\ 
                 0 & 10 \end{bmatrix} =
-    \begin{bmatrix} x.10 + y.0 & x.0 + y.1 \end{bmatrix} =
+    \begin{bmatrix} x.10 + y.0 & x.0 + y.10 \end{bmatrix} =
     \begin{bmatrix} 10x & 10y \end{bmatrix}
 $$
 
