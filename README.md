@@ -39,7 +39,7 @@ Let‘s see how different 2x2 matrices could be used to express different transf
 $$ \begin{bmatrix} x & y\end{bmatrix} . 
     \begin{bmatrix} 1 & 0 \\\ 
                 0 & 1 \end{bmatrix} =
-    \begin{bmatrix} x.1 + y.0 & x.0 + y.1 \end{bmatrix} =
+    \begin{bmatrix} x.1 + y.0 & x.0 + y.10 \end{bmatrix} =
     \begin{bmatrix} x & y \end{bmatrix}
 $$
 
