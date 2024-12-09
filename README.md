@@ -109,28 +109,61 @@ $$
 
 The drawback of this method is that the figure is transformed regarding *x* and *y* axes.
 
+### Rotation matrix (counter clockwise or trigonometric direction)
+
+The rotation formulas are harder to explain. 
+
+First of all, a reminder of basic trigonometry formulas :
+
+![Basic trigonometry definition : cos φ = x/r and sin φ = y/r](./img/Angles.png)
+
+Let’s apply these formulas in the context of a rotation :
+
+![Rotation illustration](./img/Rotation.png)
+
+Let’s do some mathematical manipulations :
+
+$$
+x' = r \cos (\phi + \theta) = r \cos \phi \cos \theta - r \sin \phi \sin \theta \\
+y' = r \sin (\phi + \theta) = r \cos \phi \sin \theta + r \sin \phi \cos \theta
+$$
+
+([Angle sums identities](https://en.wikipedia.org/wiki/List_of_trigonometric_identities#Angle_sum_and_difference_identities) on Wikipedia in case you forgot)
+
+We can replace *r cos φ* by *x* and *r sin φ* by *y* and get :
+
+$$
+x' = x \cos \theta - y \sin \theta \\
+y' = x \sin \theta + y \cos \theta
+$$
+
+We can get the same result with this matrix product :
+
+$$ \begin{bmatrix} x & y \end{bmatrix} . 
+    \begin{bmatrix} \cos \theta & \sin \theta \\\ 
+    - \sin \theta & \cos \theta \end{bmatrix} = 
+    \begin{bmatrix} x \cos \theta - y \sin \theta &
+     x \sin \theta + y \cos \theta \end{bmatrix} 
+$$
+
+Thereby the rotation matrix is :
+
+$$
+ \begin{bmatrix} \cos \theta & \sin \theta \\\ 
+                -\sin \theta & \cos \theta \end{bmatrix}
+$$
+
+The drawback of this formula is that rotation is (*x* and *y*) axes origin centered. 
+
 ### Rotation matrix (clockwise)
-
-The rotation formulas are harder to explain. (Explanation will come with figures soon).
-
-For the moment, just take for granted that the rotation matrix is :
-
-$$
- \begin{bmatrix} \cos \theta & -\sin \theta \\\ 
-                \sin \theta & \cos \theta \end{bmatrix}
-$$
-
-The drawback of this formula is that rotation is (*x* and *y* axes) origin centered. 
-
-### Rotation matrix (anti-clockwise)
 
 Anti-clockwise rotation can easily be realised with the rotation matrix, you just need to use -θ rather than θ.
 
 But you can also stick to θ and use a very similar matrix :
 
 $$
- \begin{bmatrix} \cos \theta & \sin \theta \\\ 
-                -\sin \theta & \cos \theta \end{bmatrix}
+ \begin{bmatrix} \cos \theta & -\sin \theta \\\ 
+                \sin \theta & \cos \theta \end{bmatrix}
 $$
 
 Of course the rotation is also axes origin centered.
